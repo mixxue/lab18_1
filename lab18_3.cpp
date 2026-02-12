@@ -8,9 +8,10 @@
 using namespace std;
 
 struct student{
-
-    //[Missing Code 1] Define struct student with four members (name ,id , gender, gpa);
-    
+    string name;
+	int id;
+	char gender;
+	float gpa;
 };
 
 struct course{
@@ -20,30 +21,7 @@ struct course{
 	vector<student *> student_list;
 };
 
-
-student text2student(string text){
-    student s;
-    string name = "", id = "", gen = "", gpa = "";
-    int count = 0;
-    for(unsigned int i = 0; i < text.length(); i++){
-        if(text[i] == ',') count++; 
-        else if(count == 0) name += text[i];
-        else if(count == 1) id += text[i];
-        else if(count == 2) gen += text[i];
-        else if(count == 3) gpa += text[i];
-    }
-    
-    //[Missing Code 2] Fill in the blank with the correct code.;
-    s.name = name;
-    s.id = _____________;
-    s.gender = _____________;
-    s.gpa = _____________;
-    
-    _____________;
-}
-
-
-student * findstudent(vector<student> allstudents,int key){ //[Missing Code 4] There is something wrong in this line.
+student * findstudent(vector<student> &allstudents,int key){
 	for(unsigned int i = 0; i < allstudents.size(); i++){
 		if(allstudents[i].id  == key) return &allstudents[i];
 	}
@@ -85,7 +63,10 @@ int main(){
 	string textline;
 	
 	while(getline(student_file,textline)){
-        student s =  text2student(textline); 
+		student s{}; 
+		char name[100];
+		sscanf(textline.c_str(), "%[^,], %d, %c, %f", name, &s.id, &s.gender, &s.gpa);
+		s.name = name;
 		allstudents.push_back(s); 		
 	}
 	
@@ -104,7 +85,7 @@ int main(){
 				state = 3;
 			}else{
 			
-			    //[Missing Code 3] Append (push_back) textline to lecture_list[] of the recently added course in allcourses[];
+			    allcourses.back().lecture_list.push_back(textline);
 			    
 			}			
 		}else{
@@ -112,9 +93,7 @@ int main(){
 				state = 1;
 			}else{
 				student *p = findstudent(allstudents,atof(textline.c_str()));
-				
-				//[Missing Code 5] Append (push_back) p to student_list of the recently added course in allcourses[];
-				
+            		allcourses.back().student_list.push_back(p);
 			}
 		}
 	}
